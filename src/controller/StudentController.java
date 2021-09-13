@@ -50,44 +50,46 @@ public class StudentController {
 
     //학기와 성적 수정 메서드
     public void modifySemesterScore(String targetSemester) {
+        System.out.println("\n=============== 수정하실 과목의 입력 정보 ===============");
+        System.out.println("\n|   학기   |   과목명   |  이수학점  |   성적   |   학점   |");
         for (int i = 0; i < existNum(); i++) {
             // 이 if문으로 인해 입력 한 학기에 일치하는 해당 배열만 수정 됨.
             if (targetSemester.equals(s[i].getSemester())) {
-                System.out.println("\n=============== 수정하실 과목의 입력 정보 ===============");
-                System.out.println("\n|   학기   |   과목명   |  이수학점  |   성적   |   학점   |");
-                System.out.println("");
                 System.out.println(s[i].showScore());
-
-                while (true) {
-                    //성적 입력
-                    System.out.print("\n수정 할 성적을 입력해주세요>> ");
-                    Score = scanner.nextDouble();
-
-                    if (Score > 4.5) {
-                        System.out.println("최대 4.5점을 초과할 수 없습니다.");
-                        continue;
-                    }
-                    else {
-                        break;
-                    }
-                }
-
-                System.out.println("");
-                // 입력받은 성적으로 수정
-                s[i].setScore(Score);
-                // 입력받은 성적은 changeScore 메서드로 변경
-                s[i].setChangeScore(changeScore(Score));
-                System.out.println("");
-                System.out.println("=============== 수정 완료 성적 ===============");
-                System.out.println("");
-                System.out.println("|   학기   |   과목명   |  이수학점  |   성적   |   학점   |");
-                System.out.println("");
-                System.out.println(s[i].showScore());
-                System.out.println("");
-                break;
             }
-
         }
+        for (int i = 0; i < existNum(); i++) {
+            while (true) {
+                // 과목 입력
+                System.out.print("\n수정 할 과목을 입력해주세요>> ");
+                String subject = scanner.next();
+                modifySubject(subject);
+
+                //성적 입력
+                System.out.print("수정 할 성적을 입력해주세요>> ");
+                Score = scanner.nextDouble();
+                if (Score > 4.5) {
+                    System.out.println("최대 4.5점을 초과할 수 없습니다.");
+                    continue;
+                } else {
+                    System.out.println("");
+                    // 입력받은 성적으로 수정
+                    s[i].setScore(Score);
+                    // 입력받은 성적은 changeScore 메서드로 변경
+                    s[i].setChangeScore(changeScore(Score));
+                    System.out.println("");
+                    System.out.println("=============== 수정 완료 성적 ===============");
+                    System.out.println("");
+                    System.out.println("|   학기   |   과목명   |  이수학점  |   성적   |   학점   |");
+                    System.out.println("");
+                    System.out.println(s[i].showScore());
+                    System.out.println("");
+                    break;
+                }
+            }
+            break;
+        }
+        return;
     }
 
     //성적 삭제 메서드
@@ -105,7 +107,7 @@ public class StudentController {
         //삭제 알고리즘
         if (delIdx != -1) {
             for (int i = delIdx; i < count - 1; i++) {
-                s[i] = s[i+1];
+                s[i] = s[i + 1];
             }
             s[count - 1] = null; //마지막 데이터 null로 변경
             return true;
@@ -165,7 +167,7 @@ public class StudentController {
     // 총 평균 학점 구해서 출력하는 메서드
     public void calculateAvg(double totalScore, int totalCredit) {
 
-        double tempAvg = getTscore()/ getTotalCredit();
+        double tempAvg = getTscore() / getTotalCredit();
         avg = String.format("%.2f", tempAvg);
 
         System.out.printf("총 이수학점 : %d   /   평균 학점 : %S\n", getTotalCredit(), avg);

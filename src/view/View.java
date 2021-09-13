@@ -133,22 +133,11 @@ public class View {
 
     //성적 수정 메서드
     public void modifyMenu() {
-        String subject = null;
         String targetSemester = null;
+        String subject = null;
         while (true) {
             System.out.println("\n=========== 과목 목록 ===========");
-            System.out.println("자바프로그래밍 - 홍길동 교수님");
-            System.out.println("소프트웨어공학 - 뽀로로 교수님");
-            System.out.println("데이터베이스 - 김영희 교수님");
-            System.out.print("\n수정하실 과목을 입력하세요>> ");
-            System.out.print(">> ");
-            subject = scanner.next();
-            System.out.println("");
-            System.out.println("=============== 입력된 성적 정보 ===============");
-            System.out.println("");
-            System.out.println("|   학기   |   과목명   |  이수학점  |   성적   |   학점   |");
-            sc.modifySubject(subject);
-
+            printAll();
             System.out.println("수정하실 학기를 입력해주세요. ex) 4학년 2학기");
             System.out.print(">> ");
             scanner.nextLine();
@@ -158,6 +147,7 @@ public class View {
             break;
 
         }
+        return;
     }
 
     //성적 삭제 메서드
