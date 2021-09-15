@@ -30,6 +30,7 @@ public class View {
             System.out.println("[4]학기별 성적 조회");
             System.out.println("[5]전체 성적 조회");
             System.out.println("[6]종료");
+            System.out.println("[7]임시 스케줄 제작 메뉴");
             System.out.println("====================================");
             System.out.print("이용하실 메뉴 번호를 입력하세요>> ");
 
@@ -55,6 +56,8 @@ public class View {
                     System.out.println("프로그램을 종료합니다.");
                     System.exit(0); //프로그램 종료
                     break;
+                case "7":
+                    sc.scheduleSearch();
                 default:
                     System.out.println("메뉴를 잘못 입력하였습니다.");
             }
@@ -268,5 +271,6 @@ public class View {
         sc.printSemester("4학년 1학기");
         sc.printSemester("4학년 2학기");
     }
+
 
 }

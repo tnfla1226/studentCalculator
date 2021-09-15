@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class StudentController {
     private final Scanner scanner = new Scanner(System.in);
     private final Student[] s = new Student[SIZE];
+    private final Student[] Schedule = new Student[SIZE];
     public static final int SIZE = 50;
     String Score = null;
     String avg;
@@ -248,4 +249,26 @@ public class StudentController {
     public Student[] printAll() {
         return s;
     }
+
+    // 시간표를 만들기 위한 학기와 과목 출력 ( target 입력받아야함 )
+    public Student[] scheduleSearch() {
+        System.out.println("\n## 시간표 입력을 시작합니다.");
+        System.out.print("학기를 입력하세요 >> ");
+        String target = scanner.nextLine();
+        System.out.println(" ");
+        for (int i = 0; i < existNum(); i++) {
+            // 입력한 학기의 학기와 과목명만 출력
+            if (target.equals(s[i].getSemester())) {
+                System.out.println(s[i].getSemester() + " | " + s[i].getSubject());
+            }
+        }
+        System.out.println("");
+        return null;
+    }
+
+    public Student[] scheduleInsert() {
+
+        return null;
+    }
+
 }
