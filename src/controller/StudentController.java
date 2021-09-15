@@ -5,8 +5,8 @@ import student.Student;
 import java.util.Scanner;
 
 public class StudentController {
-    private Scanner scanner = new Scanner(System.in);
-    private Student[] s = new Student[SIZE];
+    private final Scanner scanner = new Scanner(System.in);
+    private final Student[] s = new Student[SIZE];
     public static final int SIZE = 50;
     String Score = null;
     String avg;
@@ -55,15 +55,17 @@ public class StudentController {
     }
 
     //과목 수정 메서드
-    public void modifySubject(String targetSubject) {
+    public boolean modifySubject(String targetSubject) {
         for (int i = 0; i < existNum(); i++) {
             if (targetSubject.equals(s[i].getSubject())) {
                 System.out.println();
                 System.out.println(s[i].showScore());
                 System.out.println();
                 targetNum = i;
+                return true;
             }
         }
+        return false;
     }
 
     //학기와 성적 수정 메서드
@@ -81,27 +83,31 @@ public class StudentController {
                 // 과목 입력
                 System.out.print("\n수정할 점수의 과목명을 입력하세요>> ");
                 String subject = scanner.next();
-                modifySubject(subject);
-
-                //성적 입력
-                System.out.print("수정할 성적을 입력하세요>> ");
-                Score = scanner.next();
-                if (!(Score.equals("A") || Score.equals("A+") || Score.equals("B") || Score.equals("B+")
-                        || Score.equals("C") || Score.equals("C+") || Score.equals("D") || Score.equals("D+") || Score.equals("F"))) {
-                    System.out.println("[A, A+, B, B+, C, C+, D, D+, F 중의 점수를 입력하세요.]");
+                if (!modifySubject(subject)) {
+                    System.out.println("과목이 일치하지 않습니다.");
                     continue;
                 } else {
-                    System.out.println();
-                    // 입력받은 성적으로 수정
-                    s[targetNum].setScore(Score);
-                    // 입력받은 성적은 changeScore 메서드로 변경
-                    s[i].setChangeScore(changeScore(Score));
-                    System.out.println("\n==================== 수정 완료 성적 ====================\n");
-                    System.out.println("|   학기   |   과목명   |  이수학점  |   성적   |   학점   |");
-                    System.out.println();
-                    System.out.println(s[targetNum].showScore());
-                    System.out.println();
-                    break;
+
+                    //성적 입력
+                    System.out.print("수정할 성적을 입력하세요>> ");
+                    Score = scanner.next();
+                    if (!(Score.equals("A") || Score.equals("A+") || Score.equals("B") || Score.equals("B+")
+                            || Score.equals("C") || Score.equals("C+") || Score.equals("D") || Score.equals("D+") || Score.equals("F"))) {
+                        System.out.println("[A, A+, B, B+, C, C+, D, D+, F 중의 점수를 입력하세요.]");
+                        continue;
+                    } else {
+                        System.out.println();
+                        // 입력받은 성적으로 수정
+                        s[targetNum].setScore(Score);
+                        // 입력받은 성적은 changeScore 메서드로 변경
+                        s[i].setChangeScore(changeScore(Score));
+                        System.out.println("\n==================== 수정 완료 성적 ====================\n");
+                        System.out.println("|   학기   |   과목명   |  이수학점  |   성적   |   학점   |");
+                        System.out.println();
+                        System.out.println(s[targetNum].showScore());
+                        System.out.println();
+                        break;
+                    }
                 }
             }
             break;
@@ -205,7 +211,7 @@ public class StudentController {
             }
         }
         calculateOneAvg(semester);
-        System.out.println("");
+        System.out.println();
     }
 
     //학기별 평균 학점 구해서 출력하는 메서드
