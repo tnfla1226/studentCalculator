@@ -395,8 +395,8 @@ public class StudentController {
         if (modify == true) {
             s[n1].setTime1(0);
             s[n1].setTime2(0);
-            System.out.println("시간표가 모두 0시로 초기화 되었습니다.");
-            System.out.println("수정 메뉴로 이동해 새로운 시간표를 입력해주세요.");
+            System.out.printf("\n%s 시간표가 모두 0시로 초기화 되었습니다.\n", target2);
+            System.out.println("수정 메뉴로 이동해 새로운 시간표를 입력해주세요.\n");
         }
         return null;
     }
