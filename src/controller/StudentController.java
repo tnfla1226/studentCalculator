@@ -266,6 +266,9 @@ public class StudentController {
             case 2:
                 scheduleModify();
                 break;
+            case 3:
+                scheduledelete();
+                break;
             default:
                 System.out.println("메뉴를 잘못 입력하셨습니다.");
         }
@@ -345,5 +348,45 @@ boolean modify = false;
     }
         return null;
 }
+
+
+    public Student[] scheduledelete() {
+        System.out.println("");
+        System.out.println("## 시간표 수정을 시작합니다.");
+        System.out.print("수정하실 학기를 입력하세요 >> ");
+        scanner.nextLine();
+        String target = scanner.nextLine();
+        System.out.println(" ");
+        int n1 = 0;
+        System.out.printf(" ================ %s 시간표 ================ \n", target);
+        System.out.println("");
+        for (int i = 0; i < existNum(); i++) {
+            // 입력한 학기의 학기와 과목명만 출력
+            if (target.equals(s[i].getSemester())) {
+                System.out.println(s[i].getSemester() + " | " + s[i].getSubject() + " | " + s[i].getTime1() + "시 - " + s[i].getTime2() + "시");
+            }
+        }
+
+        boolean modify = false;
+        System.out.println("");
+        System.out.print("수정하실 과목을 입력하세요 >> ");
+        String target2 = scanner.nextLine();
+
+        for (int i = 0; i < existNum(); i++) {
+            if (target2.equals(s[i].getSubject())) {
+                modify = true;
+                n1 = i;
+            }
+        }
+        if(  modify == true ) {
+            s[n1].setTime1(0);
+            s[n1].setTime2(0);
+            System.out.println("시간표가 모두 0시로 초기화 되었습니다.");
+            System.out.println("수정 메뉴로 이동해 새로운 시간표를 입력해주세요.");
+        }
+        return null;
+    }
+
+
 
 }
