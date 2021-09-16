@@ -315,4 +315,5 @@ public class View {
         sc.printSemester("4학년 2학기");
     }
 
+    
 }

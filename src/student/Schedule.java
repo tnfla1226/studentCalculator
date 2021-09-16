@@ -49,4 +49,5 @@ public class Schedule {
     public void setTime2(int time2) {
         this.time2 = time2;
     }
+
 }

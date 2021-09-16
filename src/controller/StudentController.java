@@ -274,7 +274,7 @@ public class StudentController {
         return s;
     }
 
-    
+
     // 시간표를 만들기 위한 학기와 과목 출력 ( target 입력받아야함 )
     public Student[] scheduleMenu() {
         System.out.println("====================================");
