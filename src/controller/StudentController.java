@@ -1,5 +1,6 @@
 package controller;
 
+import student.Schedule;
 import student.Student;
 
 import java.util.InputMismatchException;
@@ -8,6 +9,8 @@ import java.util.Scanner;
 public class StudentController {
     private final Scanner scanner = new Scanner(System.in);
     private final Student[] s = new Student[SIZE];
+    private final Schedule[] c = new Schedule[SIZE];
+
     public static final int SIZE = 50;
     String Score = null;
     String avg;
@@ -19,9 +22,10 @@ public class StudentController {
 
     // 객체 입력
     public StudentController() {
-        s[0] = new Student("1학년 1학기", "자바프로그래밍", 3, "A", 4.0, 07, 10);
-        s[1] = new Student("1학년 1학기", "소프트웨어공학", 2, "B+", 3.5, 13, 15);
-        s[2] = new Student("1학년 2학기", "데이터베이스", 3, "B+", 3.5, 16, 20);
+        //성적 객체
+        s[0] = new Student("1학년 1학기", "자바프로그래밍", 3, "A", 4.0);
+        s[1] = new Student("1학년 1학기", "소프트웨어공학", 2, "B+", 3.5);
+        s[2] = new Student("1학년 2학기", "데이터베이스", 3, "B+", 3.5);
 //        s[3] = new Student("1학년 2학기", "통신개론", 3, 0.0, "F");
 //        s[4] = new Student("2학년 1학기", "프로그래밍언어론", 3, 4.5, "A+");
 //        s[5] = new Student("2학년 1학기", "컴퓨터활용", 3, 4.5, "A+");
@@ -36,6 +40,11 @@ public class StudentController {
 //        s[14] = new Student("4학년 2학기", "디지털콘텐츠", 3, 4.0, "A");
 //        s[15] = new Student("4학년 2학기", "중국어기초", 2, 2.5, "C+");
 
+
+        //시간표 객체
+        c[0] = new Schedule("1학년 1학기", "자바프로그래밍",10, 12);
+        c[1] = new Schedule("1학년 1학기", "소프트웨어공학",13, 15);
+        c[2] = new Schedule("1학년 1학기", "데이터베이스",17, 18);
 
     }
 
@@ -52,11 +61,22 @@ public class StudentController {
         return count;
     }
 
+    public int existNumShedule() {
+        int count = 0; // 숫자를 세는 변수
+        for (int i = 0; i < c.length; i++) {
+            if (c[i] == null) {
+                break;
+            }
+            count++;
+        }
+        return count;
+    }
 
-    //입력 메서드
-    public void insert(String semester, String subject, int credit, String score, double changeScore, int time1, int time2) {
+
+    //성적 입력 메서드
+    public void insert(String semester, String subject, int credit, String score, double changeScore) {
         int count = existNum();
-        s[count] = new Student(semester, subject, credit, score, changeScore, time1, time2);
+        s[count] = new Student(semester, subject, credit, score, changeScore);
     }
 
     //과목 수정 메서드
@@ -89,7 +109,7 @@ public class StudentController {
                 System.out.print("\n수정할 점수의 과목명을 입력하세요>> ");
                 String subject = scanner.next();
                 if (!modifySubject(subject)) {
-                    System.out.println("과목이 일치하지 않습니다.");
+                    System.out.println("과목명이 일치하지 않습니다.");
                     continue;
                 } else {
 
@@ -98,7 +118,7 @@ public class StudentController {
                     Score = scanner.next();
                     if (!(Score.equals("A") || Score.equals("A+") || Score.equals("B") || Score.equals("B+")
                             || Score.equals("C") || Score.equals("C+") || Score.equals("D") || Score.equals("D+") || Score.equals("F"))) {
-                        System.out.println("[A, A+, B, B+, C, C+, D, D+, F 중의 점수를 입력하세요.]");
+                        System.out.println("## A, A+, B, B+, C, C+, D, D+, F 중의 점수를 입력하세요.");
                         continue;
                     } else {
                         System.out.println();
@@ -254,28 +274,142 @@ public class StudentController {
         return s;
     }
 
+
+
     // 시간표를 만들기 위한 학기와 과목 출력 ( target 입력받아야함 )
     public Student[] scheduleMenu() {
+        System.out.println("====================================");
         System.out.println("\n## 시간표 관련 메뉴를 선택하세요.");
-        System.out.println("[1]시간표 조회");
-        System.out.println("[2]시간표 수정");
-        System.out.println("[3]시간표 삭제");
+        System.out.println("[1]시간표 입력");
+        System.out.println("[2]시간표 조회");
+        System.out.println("[3]시간표 수정");
+        System.out.println("[4]시간표 삭제");
+        System.out.println("====================================");
         System.out.print("메뉴 입력 >> ");
         int Num = scanner.nextInt();
         switch (Num) {
             case 1:
-                scheduleView();
+                scheduleInsert();
                 break;
             case 2:
-                scheduleModify();
+                scheduleView();
                 break;
             case 3:
+                scheduleModify();
+                break;
+            case 4:
                 scheduledelete();
                 break;
             default:
-                System.out.println("메뉴를 잘못 입력하셨습니다.");
+                System.out.println("잘못된 입력입니다.");
         }
         return null;
+    }
+
+    //시간표 입력 메서드
+    public void scheduleInsert(String semester, String subject, int time1, int time2) {
+        int count = existNumShedule();
+        c[count] = new Schedule(semester, subject, time1, time2);
+    }
+
+    public void scheduleInsert() {
+
+        String semester;
+        String subject;
+        int time1;
+        int time2;
+        String menuNo;
+
+        System.out.println("====================================");
+        semester = seasonMenu();
+
+        while (true) {
+            System.out.println("============= 과목 목록 ==============");
+            System.out.println("1. 자바프로그래밍 - 홍길동 교수님");
+            System.out.println("2. 소프트웨어공학 - 뽀로로 교수님");
+            System.out.println("3. 데이터베이스 - 김영희 교수님");
+            System.out.println("4. 통신개론 - 신짱구 교수님");
+            System.out.println("5. 컴퓨터활용 - 신형만 교수님");
+            System.out.println("6. 데이터구조 - 봉미선 교수님");
+            System.out.println("7. 웹서버설계및구축 - 한유리 교수님");
+            System.out.println("8. 현대인과영양 - 신짱아 교수님");
+            System.out.println("9. 실용영어 - 이훈이 교수님");
+            System.out.println("10. 인성심리학 - 이맹구 교수님");
+            System.out.println("====================================");
+
+            //과목 입력
+            System.out.print("과목 입력: ");
+            subject = scanner.next();
+            if (!subject.equals("자바프로그래밍") && !subject.equals("소프트웨어공학") && !subject.equals("데이터베이스")
+                    && !subject.equals("통신개론") && !subject.equals("컴퓨터활용") && !subject.equals("데이터구조")
+                    && !subject.equals("웹서버설계및구축") && !subject.equals("현대인과영양") && !subject.equals("실용영어") && !subject.equals("인성심리학")
+                    && !subject.equals("1") && !subject.equals("2") && !subject.equals("3")
+                    && !subject.equals("4") && !subject.equals("5") && !subject.equals("6")
+                    && !subject.equals("7") && !subject.equals("8") && !subject.equals("9")
+                    && !subject.equals("10")){
+                System.out.println("과목명을 다시 입력해주세요.");
+                continue;
+            } else if (subject.equals("1"))
+                subject = "자바프로그래밍";
+            else if (subject.equals("2")) {
+                subject = "소프트웨어공학";
+            } else if (subject.equals("3")) {
+                subject = "데이터베이스";
+            } else if (subject.equals("4")) {
+                subject = "통신개론";
+            } else if (subject.equals("5")) {
+                subject = "컴퓨터활용";
+            } else if (subject.equals("6")) {
+                subject = "데이터구조";
+            } else if (subject.equals("7")) {
+                subject = "웹서버설계및구출";
+            } else if (subject.equals("8")) {
+                subject = "현대인과영양";
+            } else if (subject.equals("9")) {
+                subject = "실용영어";
+            } else if (subject.equals("10")) {
+                subject = "인성심리학";
+            }
+
+            while (true) {
+                try {
+                    System.out.println("");
+                    System.out.println("## 강의 시간은 24시 단위로 입력합니다.");
+                    System.out.println("## EX) 오후 1시 = 13시");
+                    System.out.print("강의 시작 시간: ");
+                    time1 = scanner.nextInt();
+
+                    System.out.print("강의 종료 시간: ");
+                    time2 = scanner.nextInt();
+
+                    if (time1 > time2) {
+                        System.out.println("");
+                        System.out.println("시작시간이 종료시간보다 느릴 수 없습니다.");
+                        continue;
+                    }
+                    else{
+                        break;
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("강의 시간은 숫자만 입력 할 수 있습니다.");
+                    continue;
+                }
+            }
+
+            // 시간표 배열 추가 메서드
+            scheduleInsert(semester, subject, time1, time2);
+
+            System.out.println("\n[추가 입력하기 : 1 / 메인메뉴로 돌아가기: 0]");
+            System.out.print(">> ");
+            menuNo = scanner.next();
+            if (menuNo.equals("1")) {
+                continue;
+            } else {
+                return;
+            }
+
+        }
+
     }
 
     public Student[] scheduleView() {
@@ -284,12 +418,12 @@ public class StudentController {
         System.out.print("학기를 입력하세요 >> ");
         scanner.nextLine();
         String target = scanner.nextLine();
-        System.out.printf(" ================ %s 시간표 ================ \n", target);
+        System.out.printf("================ %s 시간표 ================ \n", target);
         System.out.println("");
-        for (int i = 0; i < existNum(); i++) {
+        for (int i = 0; i < existNumShedule(); i++) {
             // 입력한 학기의 학기와 과목명만 출력
-            if (target.equals(s[i].getSemester())) {
-                System.out.println(s[i].getSemester() + " | " + s[i].getSubject() + " | " + s[i].getTime1() + "시 - " + s[i].getTime2() + "시");
+            if (target.equals(c[i].getScheduleSemester())) {
+                System.out.println(c[i].getScheduleSemester() + " | " + c[i].getScheduleSubject() + " | " + c[i].getTime1() + "시 - " + c[i].getTime2() + "시");
             }
         }
         System.out.println("");
@@ -305,24 +439,21 @@ public class StudentController {
         scanner.nextLine();
         target = scanner.nextLine();
         System.out.println(" ");
-        n1 = 0;
         System.out.println("");
-        for (int i = 0; i < existNum(); i++) {
+        for (int i = 0; i < existNumShedule(); i++) {
             // 입력한 학기의 학기와 과목명만 출력
-            if (target.equals(s[i].getSemester())) {
-                System.out.println(s[i].getSemester() + " | " + s[i].getSubject() + " | " + s[i].getTime1() + "시 - " + s[i].getTime2() + "시");
-                break;
+            if (target.equals(c[i].getScheduleSemester())) {
+                System.out.println(c[i].showSchedule());
             }
         }
-
 
         System.out.println("");
         while (true) {
             System.out.print("수정하실 과목을 입력하세요 >> ");
             String target2 = scanner.nextLine();
 
-            for (int i = 0; i < existNum(); i++) {
-                if (target2.equals(s[i].getSubject())) {
+            for (int i = 0; i < existNumShedule(); i++) {
+                if (target2.equals(c[i].getScheduleSubject())) {
                     modify = true;
                     n1 = i;
                 }
@@ -336,21 +467,21 @@ public class StudentController {
                     System.out.println("## EX) 오후 1시 = 13시");
                     System.out.print("강의 시작 시간: ");
                     time1 = scanner.nextInt();
-                    s[n1].setTime1(time1);
+                    c[n1].setTime1(time1);
 
                     System.out.print("강의 종료 시간: ");
                     time2 = scanner.nextInt();
-                    s[n1].setTime2(time2);
+                    c[n1].setTime2(time2);
 
                     if(time1 > time2) {
                         System.out.println("");
-                        System.out.println("## 시작시간이 종료시간보다 느릴 수 없습니다.");
-                        break;
+                        System.out.println("시작시간이 종료시간보다 느릴 수 없습니다.");
+                        continue;
                     }
                     System.out.println("");
                     System.out.printf(" ================ %s 수정 시간표 ================ \n", target);
                     System.out.println("");
-                    System.out.println(s[n1].getSemester() + " | " + s[n1].getSubject() + " | " + s[n1].getTime1() + "시 - " + s[n1].getTime2() + "시");
+                    System.out.println(c[n1].getScheduleSemester() + " | " + c[n1].getScheduleSubject() + " | " + c[n1].getTime1() + "시 - " + c[n1].getTime2() + "시");
                     System.out.println("");
                     break;
                 } catch (InputMismatchException e) {
@@ -364,7 +495,10 @@ public class StudentController {
     }
 
 
-    public Student[] scheduledelete() {
+    public void scheduledelete() {
+
+        boolean check = false;
+
         System.out.println("");
         System.out.println("## 시간표 삭제를 시작합니다.");
         System.out.print("수정하실 학기를 입력하세요 >> ");
@@ -372,32 +506,106 @@ public class StudentController {
         String target = scanner.nextLine();
         System.out.println(" ");
         int n1 = 0;
-        System.out.printf(" ================ %s 시간표 ================ \n", target);
+        System.out.printf("================ %s 시간표 ================ \n", target);
         System.out.println("");
-        for (int i = 0; i < existNum(); i++) {
+        for (int i = 0; i < existNumShedule(); i++) {
             // 입력한 학기의 학기와 과목명만 출력
-            if (target.equals(s[i].getSemester())) {
-                System.out.println(s[i].getSemester() + " | " + s[i].getSubject() + " | " + s[i].getTime1() + "시 - " + s[i].getTime2() + "시");
+            if (target.equals(c[i].getScheduleSemester())) {
+                System.out.println(c[i].getScheduleSemester() + " | " + c[i].getScheduleSubject() + " | " + c[i].getTime1() + "시 - " + c[i].getTime2() + "시");
             }
         }
 
-        boolean modify = false;
         System.out.println("");
-        System.out.print("수정하실 과목을 입력하세요 >> ");
-        String target2 = scanner.nextLine();
 
-        for (int i = 0; i < existNum(); i++) {
-            if (target2.equals(s[i].getSubject())) {
-                modify = true;
-                n1 = i;
+        while (true) {
+            System.out.print("삭제하실 과목을 입력하세요 >> ");
+            String target2 = scanner.nextLine();
+
+
+            int count = existNumShedule();
+            //삭제할 데이터 인덱스 구하기
+            int delIdx = -1;
+            for (int i = 0; i < count; i++) {
+                if (target.equals(c[i].getScheduleSemester())) {
+                    if (target2.equals(c[i].getScheduleSubject())) {
+                        delIdx = i;
+                        break;
+                    }
+                }
+            }
+
+            //삭제 알고리즘
+            if (delIdx != -1) {
+                for (int i = delIdx; i < count - 1; i++) {
+                    c[i] = c[i + 1];
+                }
+                c[count - 1] = null; //마지막 데이터 null로 변경
+                check = true;
+            } else {
+                check = false;
+            }
+
+            if (check) {
+                System.out.println("삭제되었습니다!");
+                return;
+            } else {
+                System.out.println("삭제할 과목명을 다시 입력하세요.");
+                continue;
             }
         }
-        if (modify == true) {
-            s[n1].setTime1(0);
-            s[n1].setTime2(0);
-            System.out.printf("\n%s 시간표가 모두 0시로 초기화 되었습니다.\n", target2);
-            System.out.println("수정 메뉴로 이동해 새로운 시간표를 입력해주세요.\n");
+    }
+
+    //학기 선택 메서드
+    public String seasonMenu() {
+
+        String semester = null;
+
+        System.out.println("[1]1학년 1학기");
+        System.out.println("[2]1학년 2학기");
+        System.out.println("[3]2학년 1학기");
+        System.out.println("[4]2학년 2학기");
+        System.out.println("[5]3학년 1학기");
+        System.out.println("[6]3학년 2학기");
+        System.out.println("[7]4학년 1학기");
+        System.out.println("[8]4학년 2학기");
+        System.out.println("====================================");
+
+        while (true) {
+            System.out.print("학기를 선택하세요>> ");
+            String menuNo = scanner.next();
+
+            switch (menuNo) {
+                case "1":
+                    semester = "1학년 1학기";
+                    break;
+                case "2":
+                    semester = "1학년 2학기";
+                    break;
+                case "3":
+                    semester = "2학년 1학기";
+                    break;
+                case "4":
+                    semester = "2학년 2학기";
+                    break;
+                case "5":
+                    semester = "3학년 1학기";
+                    break;
+                case "6":
+                    semester = "3학년 2학기";
+                    break;
+                case "7":
+                    semester = "4학년 1학기";
+                    break;
+                case "8":
+                    semester = "4학년 2학기";
+                    break;
+                default:
+                    System.out.println("잘못된 입력입니다.");
+                    System.out.println();
+                    continue;
+            }
+            break;
         }
-        return null;
+        return semester;
     }
 }

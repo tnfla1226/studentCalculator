@@ -88,20 +88,47 @@ public class View {
             System.out.println("1. 자바프로그래밍 - 홍길동 교수님");
             System.out.println("2. 소프트웨어공학 - 뽀로로 교수님");
             System.out.println("3. 데이터베이스 - 김영희 교수님");
+            System.out.println("4. 통신개론 - 신짱구 교수님");
+            System.out.println("5. 컴퓨터활용 - 신형만 교수님");
+            System.out.println("6. 데이터구조 - 봉미선 교수님");
+            System.out.println("7. 웹서버설계및구축 - 한유리 교수님");
+            System.out.println("8. 현대인과영양 - 신짱아 교수님");
+            System.out.println("9. 실용영어 - 이훈이 교수님");
+            System.out.println("10. 인성심리학 - 이맹구 교수님");
             System.out.println("====================================");
 
             //과목 입력
             System.out.print("과목 입력: ");
             subject = scanner.next();
             if (!subject.equals("자바프로그래밍") && !subject.equals("소프트웨어공학") && !subject.equals("데이터베이스")
-                    && !subject.equals("1") && !subject.equals("2") && !subject.equals("3")) {
-                System.out.println("잘못된 입력입니다.");
+                    && !subject.equals("통신개론") && !subject.equals("컴퓨터활용") && !subject.equals("데이터구조")
+                    && !subject.equals("웹서버설계및구축") && !subject.equals("현대인과영양") && !subject.equals("실용영어") && !subject.equals("인성심리학")
+                    && !subject.equals("1") && !subject.equals("2") && !subject.equals("3")
+                    && !subject.equals("4") && !subject.equals("5") && !subject.equals("6")
+                    && !subject.equals("7") && !subject.equals("8") && !subject.equals("9")
+                    && !subject.equals("10")){
+                System.out.println("과목명을 다시 입력해주세요.");
                 continue;
-            } else if (subject.equals("1")) subject = "자바프로그래밍";
+            } else if (subject.equals("1"))
+                subject = "자바프로그래밍";
             else if (subject.equals("2")) {
                 subject = "소프트웨어공학";
             } else if (subject.equals("3")) {
                 subject = "데이터베이스";
+            } else if (subject.equals("4")) {
+                subject = "통신개론";
+            } else if (subject.equals("5")) {
+                subject = "컴퓨터활용";
+            } else if (subject.equals("6")) {
+                subject = "데이터구조";
+            } else if (subject.equals("7")) {
+                subject = "웹서버설계및구출";
+            } else if (subject.equals("8")) {
+                subject = "현대인과영양";
+            } else if (subject.equals("9")) {
+                subject = "실용영어";
+            } else if (subject.equals("10")) {
+                subject = "인성심리학";
             }
 
             //점수 입력
@@ -112,7 +139,7 @@ public class View {
                 score = scanner.next();
                 if (!(score.equals("A") || score.equals("A+") || score.equals("B") || score.equals("B+")
                         || score.equals("C") || score.equals("C+") || score.equals("D") || score.equals("D+") || score.equals("F"))) {
-                    System.out.println("\n[A, A+, B, B+, C, C+, D, D+, F 중의 점수를 입력하세요.]");
+                    System.out.println("\n## A, A+, B, B+, C, C+, D, D+, F 중의 점수를 입력하세요.");
                     continue modifyScore;
                 }
                 resultScore = sc.changeScore(score);
@@ -121,25 +148,20 @@ public class View {
 
             //이수학점 임력
             int credit = 0;
-            int time1 = 0;
-            int time2 = 0;
-            try {
+            credit: while (true) {
+                //이수학점 임력
                 System.out.print("이수학점 입력: ");
-                credit = scanner.nextInt();
-                System.out.println(" ");
-                System.out.println("## 강의 시간은 24시 단위로 입력합니다.");
-                System.out.println("## EX) 오후 1시 = 13시");
-                System.out.print("강의 시작 시간: ");
-                time1 = scanner.nextInt();
-
-                System.out.print("강의 종료 시간: ");
-                time2 = scanner.nextInt();
-            } catch (InputMismatchException e) {
-                System.out.println("강의 시간은 숫자만 입력 할 수 있습니다.");
-                return;
+                try {
+                    credit = scanner.nextInt();
+                } catch (InputMismatchException e) {
+                    System.out.println("\n정수로만 입력 가능합니다.");
+                    scanner.nextLine();
+                    continue credit;
+                }
+                break;
             }
             // 학생 배열 추가 메서드
-            sc.insert(semester2, subject, credit, score, resultScore, time1, time2);
+            sc.insert(semester2, subject, credit, score, resultScore);
 
             System.out.println("\n[추가 입력하기 : 1 / 메인메뉴로 돌아가기: 0]");
             System.out.print(">> ");
