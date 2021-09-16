@@ -3,12 +3,14 @@ package view;
 import controller.StudentController;
 import student.Student;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class View {
 
     private Scanner scanner = new Scanner(System.in);
     private StudentController sc = new StudentController();
+    private
     String menuNo = "-1";
     int sCount = 0;
     public String semester2;
@@ -57,7 +59,8 @@ public class View {
                     System.exit(0); //프로그램 종료
                     break;
                 case "7":
-                    sc.scheduleSearch();
+                    sc.scheduleMenu();
+                    break;
                 default:
                     System.out.println("메뉴를 잘못 입력하였습니다.");
             }
@@ -102,7 +105,8 @@ public class View {
             }
 
             //점수 입력
-            modifyScore: while (true) {
+            modifyScore:
+            while (true) {
 
                 System.out.print("점수 입력: ");
                 score = scanner.next();
@@ -116,18 +120,34 @@ public class View {
             }
 
             //이수학점 임력
-            System.out.print("이수학점 입력: ");
-            int credit = scanner.nextInt();
+            int credit = 0;
+            int time1 = 0;
+            int time2 = 0;
+            try {
+                System.out.print("이수학점 입력: ");
+                credit = scanner.nextInt();
+                System.out.println(" ");
+                System.out.println("## 강의 시간은 24시 단위로 입력합니다.");
+                System.out.println("## EX) 오후 1시 = 13시");
+                System.out.print("강의 시작 시간: ");
+                time1 = scanner.nextInt();
 
-            sc.insert(semester2, subject, credit, score, resultScore);
+                System.out.print("강의 종료 시간: ");
+                time2 = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("강의 시간은 숫자만 입력 할 수 있습니다.");
+                return;
+            }
+            // 학생 배열 추가 메서드
+            sc.insert(semester2, subject, credit, score, resultScore, time1, time2);
 
             System.out.println("\n[추가 입력하기 : 1 / 메인메뉴로 돌아가기: 0]");
             System.out.print(">> ");
             menuNo = scanner.next();
             if (menuNo.equals("1")) {
-                    continue;
+                continue;
             } else {
-                    return;
+                return;
             }
 
         }
@@ -159,7 +179,8 @@ public class View {
             String seasoon = seasonMenu();
             sc.printSemester(seasoon);
 
-            delete: while (true) {
+            delete:
+            while (true) {
                 System.out.println("====================================");
                 System.out.print("삭제할 과목 입력>> ");
                 String subjectName = scanner.next();

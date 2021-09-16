@@ -18,14 +18,37 @@ public class Student {
     // 숫자로 환산받은 점수를 모두 더함 ( 나중에 나눠서 (A~F)로 변환 예정 )
     private double total;
     private double avg;
+    private int time1, time2;
 
-    public Student(String semester, String subject, int credit, String score, double changeScore) {
+    public int getTime1() {
+        return time1;
+    }
+
+    public void setTime1(int time1) {
+        this.time1 = time1;
+    }
+
+    public int getTime2() {
+        return time2;
+    }
+
+    public void setTime2(int time2) {
+        this.time2 = time2;
+    }
+
+    public Student(String semester, String subject, int credit, String score, double changeScore, int time1, int time2) {
 
         this.semester = semester;
         this.subject = subject;
         this.score = score;
         this.changeScore = changeScore;
         this.credit = credit;
+        this.time1 = time1;
+        this.time2 = time2;
+    }
+
+    public String showSchedule() {
+        return this.semester + "  |  " + this.subject + "  |  " + this.time1 + "시 - " + this.time2 + "시 ";
     }
 
     public String showScore() {
