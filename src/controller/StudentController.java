@@ -341,6 +341,12 @@ public class StudentController {
                     System.out.print("강의 종료 시간: ");
                     time2 = scanner.nextInt();
                     s[n1].setTime2(time2);
+
+                    if(time1 > time2) {
+                        System.out.println("");
+                        System.out.println("## 시작시간이 종료시간보다 느릴 수 없습니다.");
+                        break;
+                    }
                     System.out.println("");
                     System.out.printf(" ================ %s 수정 시간표 ================ \n", target);
                     System.out.println("");
